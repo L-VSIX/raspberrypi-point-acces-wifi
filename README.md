@@ -11,6 +11,7 @@ Le SSID `Raidaporter_LAN` diffuse directement le réseau LAN, sans NAT ni sous-r
 **1. Installation des paquets**
 ```bash
 sudo apt update
+sudo apt install -y vlan
 sudo apt install -y hostapd bridge-utils ifupdown
 sudo systemctl stop hostapd
 ```
