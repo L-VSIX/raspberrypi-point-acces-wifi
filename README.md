@@ -16,7 +16,13 @@ sudo apt install -y hostapd bridge-utils ifupdown
 sudo systemctl stop hostapd
 ```
 
-**2. Retrait des interfaces de NetworkManager** (`/etc/NetworkManager/NetworkManager.conf`)
+**2. Charger et persister le module 8021q
+```bash
+echo "8021q" | sudo tee -a /etc/modules
+sudo modprobe 8021q
+lsmod | grep 8021q
+```
+**3. Retrait des interfaces de NetworkManager** (`/etc/NetworkManager/NetworkManager.conf`)
 ```ini
 [keyfile]
 unmanaged-devices=interface-name:eth0;interface-name:eth0.30;interface-name:br0;interface-name:wlan0
@@ -25,7 +31,7 @@ unmanaged-devices=interface-name:eth0;interface-name:eth0.30;interface-name:br0;
 sudo systemctl restart NetworkManager
 ```
 
-**3. Déclaration du bridge** (`/etc/network/interfaces`)
+**4. Déclaration du bridge** (`/etc/network/interfaces`)
 ```ini
 auto lo
 iface lo inet loopback
@@ -48,7 +54,7 @@ iface br0 inet dhcp
     bridge_fd 0
 ```
 
-**4. Configuration hostapd**
+**5. Configuration hostapd**
 ```ini
 interface=wlan0
 bridge=br0
@@ -64,7 +70,7 @@ wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 ```
 
-**5. Activation**
+**6. Activation**
 ```bash
 sudo systemctl unmask hostapd
 sudo systemctl enable hostapd
