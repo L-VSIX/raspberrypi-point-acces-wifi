@@ -18,7 +18,7 @@ sudo systemctl stop hostapd
 **2. Retrait des interfaces de NetworkManager** (`/etc/NetworkManager/NetworkManager.conf`)
 ```ini
 [keyfile]
-unmanaged-devices=interface-name:eth0,interface-name:br0,interface-name:wlan0
+unmanaged-devices=interface-name:eth0;interface-name:eth0.30;interface-name:br0;interface-name:wlan0
 ```
 ```bash
 sudo systemctl restart NetworkManager
@@ -29,12 +29,19 @@ sudo systemctl restart NetworkManager
 auto lo
 iface lo inet loopback
 
+# Interface physique brute (pas d'IP)
 auto eth0
 iface eth0 inet manual
 
+# Sous-interface VLAN 30 (GES)
+auto eth0.30
+iface eth0.30 inet manual
+    vlan-raw-device eth0
+
+# Bridge liant le VLAN 30 et le WiFi
 auto br0
 iface br0 inet dhcp
-    bridge_ports eth0
+    bridge_ports eth0.30
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
@@ -64,7 +71,7 @@ sudo systemctl start hostapd
 sudo reboot
 ```
 
-Après redémarrage, `ip a show br0` doit afficher l'IP DHCP du LAN (`192.168.6.13`), confirmant que le bridge hérite bien de l'identité réseau du LAN.
+Après redémarrage, `ip a show br0` doit afficher l'IP DHCP du LAN (`192.168.36.2`), confirmant que le bridge hérite bien de l'identité réseau du LAN.
 
 ## Limite connue
 
