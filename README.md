@@ -86,8 +86,8 @@ Le Raspberry Pi héberge à la fois le nœud Wi-Fi et le nœud secondaire Tailsc
 
 ## Repos liés
 
-- `tailscale-routage-sous-reseaux`
-- `opnsense-segmentation-vlan`
+- [`tailscale-routage-sous-reseaux`](https://github.com/L-VSIX/tailscale-routage-sous-reseaux)
+- [`opnsense-segmentation-vlan`](https://github.com/L-VSIX/opnsense-segmentation-vlan)
 
 ## Auteur
 
